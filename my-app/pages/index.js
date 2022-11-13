@@ -219,7 +219,7 @@ export default function Home() {
         TOKEN_CONTRACT_ABI,
         signer
       )
-
+      
       const tx = await tokenContract.withdraw()
       setLoading(true)
       await tx.wait()
@@ -289,7 +289,7 @@ export default function Home() {
         getTotalTokensMinted()
         getBalanceOfCryptoDevTokens()
         getTokensToBeClaimed()
-        // withdrawCoins()
+        withdrawCoins()
       }
     }, [walletConnected])
 
