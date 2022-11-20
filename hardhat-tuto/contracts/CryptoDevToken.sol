@@ -22,7 +22,7 @@ contract CryptoDevToken is ERC20, Ownable {
     // Mapping to keep track of which tokenIds have been claimed
     mapping (uint256=>bool) public tokenIdsClaimed;
 
-    constructor (address _cryptoDevsContract) ERC20("Crypto Dev TOken", "CD") {
+    constructor (address _cryptoDevsContract) ERC20("Crypto Dev Token", "CDT") {
         CryptoDevsNFT = ICryptoDevs(_cryptoDevsContract);
     }
 
@@ -36,7 +36,7 @@ contract CryptoDevToken is ERC20, Ownable {
         uint256 _requiredAmount = tokenPrice * amount;
         require(msg.value >= _requiredAmount, "Ether sent is incorrect");
         uint256 amountWithDecimals = amount * 10**18;
-        require(totalSupply() + amountWithDecimals < maxTotalSupply, "Exceeds the max supply available");
+        require((totalSupply() + amountWithDecimals) < maxTotalSupply, "Exceeds the max supply available");
         // call the internal function from Openzeppeelin's ERC20 contract
         _mint(msg.sender, amountWithDecimals);
      }
@@ -63,12 +63,12 @@ contract CryptoDevToken is ERC20, Ownable {
                 amount+= 1;
                 tokenIdsClaimed[tokenId] = true;
             }
-            // If all the tokenIds have been claimed, revert the transaction
-            require(amount > 0, "You have claimed all the tokens!");
-            // call the internal function from Openzeppeelin's ERC20 contract
-            // mint (amount*10) tokens for each NFT
-            _mint(msg.sender, amount * tokensPerNFT);
         }
+        // If all the tokenIds have been claimed, revert the transaction
+        require(amount > 0, "You have claimed all the tokens!");
+        // call the internal function from Openzeppeelin's ERC20 contract
+        // mint (amount*10) tokens for each NFT
+        _mint(msg.sender, amount * tokensPerNFT);
       }
 
       /**
